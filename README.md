@@ -1,0 +1,142 @@
+[**English**](./README.md) | [简体中文](./README.zh-CN.md)
+
+# ONX3248G035
+
+![ONX3248G035](<Product Images/ONX3248G035-1.jpg>)
+
+## Overview
+
+`ONX3248G035` is a 3.5-inch Open Nextion HMI development board based on `ESP32-S3R8`. It integrates a capacitive touch display, `2.4 GHz Wi-Fi`, `Bluetooth 5 LE`, `MicroSD`, camera, microphone, speaker, battery management, and multiple expansion interfaces, making it suitable for HMI panels, IoT terminals, multimedia interaction, and rapid prototyping.
+
+This repository collects product images, mechanical drawings, schematics, PCB files, certification documents, datasheets, USB-to-serial drivers, and `ESP-IDF` example projects for this model, so users can download and start development more easily.
+
+## Purchase Links
+
+- Product: [Open Nextion 3.5" Genius Series ESP32-S3 LCD Touchscreen Development Board](https://itead.cc/product/open-nextion-3-5-genius-series-esp32-s3-lcd-touchscreen-development-board/)
+- Optional Audio Accessory: [Nextion BOX Speaker](https://itead.cc/product/nextion-box-speaker/)
+- Optional Microphone Accessory: [Nextion Dual MIC Board](https://itead.cc/product/nextion-dual-mic-board/)
+- Optional Expansion Accessory: [Nextion IO Adapter V2](https://itead.cc/product/nextion-io-adapter-v2/)
+
+## Hardware Specifications
+
+The following specifications are compiled from the official Wiki and the files included in this repository:
+
+| Item | Specification |
+| :--- | :--- |
+| Model | `ONX3248G035` |
+| MCU | `ESP32-S3R8`, Xtensa LX7 dual-core, up to `240 MHz` |
+| Flash | `16 MB` |
+| PSRAM | `8 MB` |
+| Display Size | `3.5"` |
+| Resolution | `320 x 480` |
+| Colors | `262K` |
+| Brightness | `300 nit` |
+| Touch Type | Capacitive touch |
+| LCD Driver | `ST7796` |
+| Touch Driver | `CST826` |
+| Wireless | `2.4 GHz Wi-Fi` + `Bluetooth 5 LE` |
+| Power Input | `DC 5V/1A` |
+| Battery Support | `3.7V` Li-ion battery interface with charging management, plus `3V` RTC backup battery support |
+| Main Interfaces | `USB-C`, Grove `I2C`, Grove `UART1`, `MicroSD`, camera interface, PDM microphone interface, speaker interface, 24-pin GPIO, external antenna connector |
+| Operating Temperature | `-20 to 70 C` |
+| Storage Temperature | `-30 to 80 C` |
+| Weight | Net weight about `61 g`, gross weight about `115 g` |
+
+## Key Features
+
+- Built on `ESP32-S3` for connected applications with graphical user interfaces.
+- Onboard `3.5"` capacitive touch display, suitable for control panels, dashboards, and interactive terminals.
+- Supports `MicroSD`, camera, `PDM` microphone, and speaker expansion for multimedia and voice-interaction projects.
+- `USB-C` is used for power, firmware flashing, and serial logs, and supports automatic download mode.
+- Includes an onboard antenna and a reserved external antenna connector for wireless applications.
+- Supports Li-ion battery power and RTC backup battery, useful for portable devices and offline-clock scenarios.
+
+## Repository Contents
+
+| Folder | Description |
+| :--- | :--- |
+| `Certifications/` | Certification and compliance documents |
+| `Datasheets/` | Datasheets for key components such as `ESP32-S3`, `ST7796`, `CST826`, `PCF8574`, and `IP4054V` |
+| `Drawings/` | Mechanical dimension file, `2D` drawing, and `3D` model |
+| `Example Programs/` | Example projects, currently mainly `ESP-IDF` examples |
+| `LTA Announcement/` | Official announcement document |
+| `Product Images/` | Product photos |
+| `Schematic & Layout /` | Schematics and PCB layout files |
+| `USB-to-Serial Driver/` | USB-to-serial drivers for Windows, macOS, and Linux |
+
+## Example Projects
+
+`Example Programs/ESP-IDF/` contains multiple ready-to-use examples. Most example folders include both Chinese and English documentation.
+
+| Example Folder | Description |
+| :--- | :--- |
+| `01_touch_test` | Touch test for LCD and touch verification |
+| `02_music_test` | Play audio from `MicroSD` with touch interaction |
+| `03_sd_card_image_test` | Read and display images from `MicroSD` |
+| `04_sd_card_test` | `MicroSD` mount, read/write, and card info test |
+| `05_wifi_test` | Wi-Fi scan, connection, and status display |
+| `06_camera_test` | Connect an `OV2640` camera and preview the image on screen |
+| `07_microphone_test` | PDM microphone capture, speech front-end processing, and playback |
+| `08_battery_test` | Battery voltage, battery level estimation, and charge status display |
+| `09_outofbox_demo` | Factory demo for quickly verifying LCD, touch, and LVGL UI |
+
+## Quick Start
+
+### 1. Install the Driver
+
+If your computer does not recognize the serial device, install the appropriate driver from `USB-to-Serial Driver/`:
+
+- Windows: `CH340K-USB-to-UART-Driver.zip`
+- macOS: `CH341SER_MAC.ZIP`
+- Linux: `CH341SER_LINUX.zip`
+
+### 2. Connect the Board
+
+Use a `USB-C` cable to connect the board to your computer. The `USB-C` port can be used for:
+
+- Power supply
+- Firmware flashing
+- Serial log output
+
+### 3. Choose an Example
+
+Go to `Example Programs/ESP-IDF/` and select the example you need. Check the included `README_zh.md` or `README_en.md` in each example folder and prepare the required peripherals, such as a `MicroSD` card, camera, microphone, or speaker.
+
+### 4. Set Up the Development Environment
+
+The included `ESP-IDF` examples indicate:
+
+- Development version: `ESP-IDF 5.4.1`
+- Recommended version: `ESP-IDF >= 5.4.0`
+
+### 5. Build and Flash
+
+Example using the out-of-box demo:
+
+```bash
+cd "Example Programs/ESP-IDF/09_outofbox_demo"
+idf.py set-target esp32s3
+idf.py build
+idf.py -p <PORT> flash monitor
+```
+
+If flashing fails on the first attempt, hold the `BOOT` button and press `RESET` once to enter download mode, then try again.
+
+## Notes
+
+- `USB_UART` and `UART0` share the same `TX/RX` signals and cannot be used at the same time.
+- The 24-pin GPIO expansion shares signals with `UART1`, `MIC_PDM`, and `CAMERA`, so check pin multiplexing before use.
+- `USB-C` supports automatic download mode, while `UART0` does not.
+- Wi-Fi supports `2.4 GHz` only.
+- The speaker interface supports up to `2W`.
+- If you need an external antenna, follow the official hardware instruction to switch the RF path by desoldering the corresponding resistor.
+- The board itself is not waterproof. If needed, use a custom enclosure.
+- For mechanical dimensions, see `Drawings/ONX3248G035-Dimension.pdf`.
+- For detailed circuit design, see the files under `Schematic & Layout /`.
+
+## References
+
+- Official product page: [ONX3248G035 Wiki](https://nextion.tech/wiki/onx3248g035/)
+- ESP-IDF getting started: [ESP32-S3 Getting Started](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/)
+
+If you are starting development on this board, it is recommended to begin with `09_outofbox_demo` or `01_touch_test` to verify the screen, touch, and basic environment first, then move on to `Wi-Fi`, `MicroSD`, camera, or audio-related features.
