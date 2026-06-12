@@ -8,7 +8,7 @@
 
 `ONX3248G035` 是一款基于 `ESP32-S3R8` 的 3.5 英寸 Open Nextion HMI 开发板，集成电容触摸显示、`2.4 GHz Wi-Fi`、`Bluetooth 5 LE`、`MicroSD`、摄像头、麦克风、喇叭、电池管理和多种扩展接口，适合用于人机交互界面、物联网终端、音视频交互和快速原型开发。
 
-本仓库汇总了该型号的产品图片、尺寸图、原理图、PCB、认证资料、数据手册、USB 转串口驱动以及 `ESP-IDF` 示例工程，方便开发者下载、评估和二次开发。
+本仓库汇总了该型号的产品图片、尺寸图、原理图、PCB、认证资料、数据手册、USB 转串口驱动以及示例工程。当前同时提供 `ESP-IDF` 与 `ESP-Arduino` 例程，方便开发者根据项目需求选择合适的开发方式。
 
 ## 购买链接
 
@@ -58,7 +58,7 @@
 | `Certifications/` | 认证与合规相关资料 |
 | `Datasheets/` | 主要芯片与器件数据手册，如 `ESP32-S3`、`ST7796`、`CST826`、`PCF8574`、`IP4054V` |
 | `Drawings/` | 结构尺寸图、`2D` 图纸、`3D` 模型 |
-| `Example Programs/` | 示例工程，当前主要提供 `ESP-IDF` 例程 |
+| `Example Programs/` | 示例工程，包含 `ESP-IDF` 与 `ESP-Arduino` 两套例程 |
 | `LTA Announcement/` | 官方相关公告文件 |
 | `Product Images/` | 产品实物图片 |
 | `Schematic & Layout /` | 原理图与 PCB 布局资料 |
@@ -66,7 +66,14 @@
 
 ## 示例工程
 
-`Example Programs/ESP-IDF/` 中已包含多个可直接参考的例程，仓库内大部分示例均附带中英文说明文档。
+`Example Programs/` 中包含两套可直接参考的例程：
+
+- `ESP-IDF/`：原生 ESP-IDF 工程，适合量产固件、组件化开发以及需要完整 ESP-IDF 能力的项目。
+- `ESP-Arduino/`：Arduino 草图工程，适合快速原型、Arduino IDE 用户，以及偏好 ESP32 Arduino Core 开发方式的项目。
+
+仓库内大部分示例均附带中英文说明文档。
+
+### ESP-IDF 例程
 
 | 示例目录 | 说明 |
 | :--- | :--- |
@@ -79,6 +86,22 @@
 | `07_microphone_test` | PDM 麦克风采集、语音前端处理与回放 |
 | `08_battery_test` | 电池电压、电量估算和充电状态显示 |
 | `09_outofbox_demo` | 出厂演示程序，快速验证 LCD、触摸和 LVGL UI |
+
+### ESP-Arduino 例程
+
+`Example Programs/ESP-Arduino/` 中提供了开发板示例的 Arduino 版本，每个目录都可以通过其中的 `.ino` 文件直接在 Arduino IDE 中打开。
+
+| 示例目录 | 说明 |
+| :--- | :--- |
+| `01_touch_test` | LCD、CST826 触摸、PCF8574 复位控制和 LVGL 触摸坐标显示测试 |
+| `02_music_test` | 从 `MicroSD` 的 `/music` 目录播放 `.mp3` 文件，并显示 LVGL 音乐界面、通过喇叭输出 |
+| `03_sd_card_image_test` | 从 `MicroSD` 扫描并显示 `JPG`、`JPEG`、`PNG` 图片 |
+| `04_sd_card_test` | 使用 `SD_MMC` 进行 `MicroSD` 挂载、写入、读取和校验测试 |
+| `05_wifi_test` | 使用 ESP32 Arduino `WiFi` 库进行 Wi-Fi 扫描和连接界面测试 |
+| `06_camera_test` | `OV2640` 摄像头采集与 LCD 实时预览 |
+| `07_microphone_test` | PDM 麦克风录音与 I2S 喇叭回放 |
+| `08_battery_test` | 电池电压采样、电量估算与充电状态显示 |
+| `09_outofbox_demo` | 出厂 LVGL widgets 演示程序的 Arduino 移植版本 |
 
 ## 快速上手
 
@@ -100,16 +123,32 @@
 
 ### 3. 选择示例工程
 
-进入 `Example Programs/ESP-IDF/`，选择需要的示例目录。根据示例自带的 `README_zh.md` 或 `README_en.md` 准备对应外设，例如 `MicroSD` 卡、摄像头、麦克风或喇叭。
+进入 `Example Programs/ESP-IDF/` 或 `Example Programs/ESP-Arduino/`，选择需要的示例目录。根据示例自带的 `README_zh.md` 或 `README_en.md` 准备对应外设，例如 `MicroSD` 卡、摄像头、麦克风或喇叭。
 
 ### 4. 配置开发环境
 
-仓库中的 `ESP-IDF` 示例工程说明显示：
+如果使用 `ESP-IDF`，仓库中的示例工程说明显示：
 
 - 开发版本：`ESP-IDF 5.4.1`
 - 推荐版本：`ESP-IDF >= 5.4.0`
 
-### 5. 编译与烧录
+如果使用 `ESP-Arduino`，请先安装 ESP32 Arduino Core，并根据所选例程安装对应库。常用库包括：
+
+- `GFX Library for Arduino`
+- `Adafruit CST8XX Library`
+- `Adafruit PCF8574`
+- `lvgl` 8.3.x
+
+部分例程还会用到额外库或 ESP32 Arduino Core 自带能力，例如 `SD_MMC`、`WiFi`、`esp_camera`、ESP-IDF I2S 驱动，或 `ESP32-audioI2S-master`。编译前请查看各示例目录中的说明文档。
+
+对于 `02_music_test`、`09_outofbox_demo` 等体积较大的 Arduino 例程，推荐 Arduino IDE 设置如下：
+
+- Board: `ESP32S3 Dev Module`
+- Flash Size: `16MB (128Mb)`
+- PSRAM: `OPI PSRAM`
+- Partition Scheme: `16M Flash (3MB APP/9.9MB FATFS)`
+
+### 5. 使用 ESP-IDF 编译与烧录
 
 以出厂演示示例为例：
 
@@ -121,6 +160,15 @@ idf.py -p <PORT> flash monitor
 ```
 
 如果首次下载失败，可按住 `BOOT` 键，再按一次 `RESET` 键进入下载模式后重新烧录。
+
+### 6. 使用 Arduino 编译与上传
+
+在 Arduino IDE 中打开目标 `.ino` 文件，选择 ESP32-S3 开发板，配置 Flash、PSRAM 和分区选项后即可编译上传。也可以通过 `arduino-cli` 指定同样的参数，例如：
+
+```bash
+arduino-cli compile --fqbn esp32:esp32:esp32s3:FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi "Example Programs/ESP-Arduino/09_outofbox_demo"
+arduino-cli upload --fqbn esp32:esp32:esp32s3:FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi -p <PORT> "Example Programs/ESP-Arduino/09_outofbox_demo"
+```
 
 ## 使用注意事项
 
@@ -139,4 +187,4 @@ idf.py -p <PORT> flash monitor
 - 官方产品页面：[ONX3248G035 Wiki](https://nextion.tech/wiki/onx3248g035/)
 - ESP-IDF 入门文档：[ESP32-S3 Getting Started](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/)
 
-如果你正在为该型号开发应用，建议先从 `09_outofbox_demo` 或 `01_touch_test` 开始，确认屏幕、触摸和基础环境正常后，再继续接入 `Wi-Fi`、`MicroSD`、摄像头或音频相关功能。
+如果你正在为该型号开发应用，建议先从 `09_outofbox_demo` 或 `01_touch_test` 开始，确认屏幕、触摸和基础环境正常后，再继续接入 `Wi-Fi`、`MicroSD`、摄像头或音频相关功能。需要完整 Espressif 开发框架时建议选择 `ESP-IDF`，希望快速使用 Arduino 风格开发时可选择 `ESP-Arduino`。

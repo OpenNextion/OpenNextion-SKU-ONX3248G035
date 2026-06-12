@@ -1,0 +1,6 @@
+profiles:
+  esp32s3r8_16m:
+    fqbn: esp32:esp32:esp32s3:FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi
+    platforms:
+      - platform: esp32:esp32
+        version: 3.3.9-cn
